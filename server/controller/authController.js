@@ -26,7 +26,7 @@ export const register = async (req,res)=>{
 
         const hashedPassword = await bycrypt.hash(password,10)
 
-        const user = await userModel.create({name, email,hashedPassword})
+        const user = await userModel.create({name, email,password : hashedPassword})
 
         const token = jwt.sign({
             id : user._id
