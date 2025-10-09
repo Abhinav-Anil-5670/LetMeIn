@@ -139,3 +139,47 @@ export const logout = async (req,res)=>{
         })
     }
 }
+
+//send verification OTP to user email
+export const sendVerifyOTP = async (req,res)=>{
+    try{
+
+        const {userId} = req.body
+        const user = await userModel.findById(userId)
+
+        if(user.isAccountVerified){
+            return res.json({
+                success : false,
+                message : "Account already verified"
+            })
+        }
+
+        const otp =  String(Math.floor(100000 + Math.random() * 900000))
+
+        user.verifyOtp = otp
+
+        user.verifyOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000
+
+        await user.save()
+
+        const emailOption = {
+            from : process.env.SENDER_EMAIL,
+            to : user.email,
+            subject : "Account Verification OTP",
+            text : `User OTP is ${otp}` 
+        }
+
+        await transporter.sendMail(emailOption)
+
+        res.json({
+            success : true,
+            message : "Verification OTP Sent"
+        })
+    }
+    catch(err){
+        res.json({
+            success : false,
+            message : err.message
+        })
+    }
+}
