@@ -239,3 +239,17 @@ export const sendVerifyOTP = async (req,res)=>{
     }
 
  }
+
+ export const isAuthenticated = async (req,res)=>{
+    try{
+        return res.json({
+            success : true
+        })
+    }
+    catch(err){
+        res.json({
+            success : false,
+            message : err.message
+        })
+    }
+ }
