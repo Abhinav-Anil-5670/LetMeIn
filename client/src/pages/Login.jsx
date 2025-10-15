@@ -9,7 +9,7 @@ const Login = () => {
 
   const navigate = useNavigate()
 
-  const {backendURL,setIsLoggedIn} = useContext(AppContext)
+  const {backendURL,setIsLoggedIn,getUserData} = useContext(AppContext)
 
   const [state, setState] = useState("Sign Up");
   const [name, setname] = useState('')
@@ -28,6 +28,7 @@ const Login = () => {
 
         if(data.success){
           setIsLoggedIn(true)
+          getUserData()
           navigate('/')
         }
         else{
@@ -39,6 +40,7 @@ const Login = () => {
 
         if(data.success){
           setIsLoggedIn(true)
+          getUserData()
           navigate('/')
         }
         else{
